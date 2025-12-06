@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Flowers School</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            background-color: #f4f7fa;
+        }
+
+        /* Top Logo Box */
+        .logo-box {
+            background-color: #4CAF50;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-box img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .logo-box h1 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        /* Student Info Box */
+        .student-box {
+            background-color: #4CAF50;
+            color: white;
+            margin: 40px auto;
+            width: 55%;
+            border-radius: 12px;
+            padding: 25px;
+            display: none;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .student-box img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            margin-right: 25px;
+            border: 3px solid white;
+        }
+
+        .student-info h2 {
+            margin: 0 0 10px;
+        }
+
+        .student-info p {
+            margin: 6px 0;
+            font-size: 15px;
+        }
+
+        /* Welcome Section */
+        .content {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .content h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            color: #555;
+        }
+
+        button {
+            padding: 10px 25px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #222;
+        }
+    </style>
+
+    <script>
+        function showProfile() {
+            document.getElementById('studentBox').style.display = 'flex';
+        }
+    </script>
+</head>
+<body>
+
+   
+    <div class="logo-box">
+        <img src="data:image/jpeg;base64,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" alt="School Logo">
+        <h1>Spring Flowers School</h1>
+    </div>
+
+ 
+    <div class="content">
+        <h2>Welcome, Student!</h2>
+        <p>Click the button below to view your profile.</p>
+        <button onclick="showProfile()">View Student Profile</button>
+    </div>
+
+    
+    <div id="studentBox" class="student-box">
+        <img src="student_image.png" alt="Student Image">
+        <div class="student-info">
+            <h2>Shashank Shivam</h2>
+            <p><strong>Roll No:</strong> 1090</p>
+            <p><strong>Class:</strong> 10th Grade</p>
+            <p><strong>Section:</strong> A</p>
+            <p><strong>Email:</strong> Shashank@example.com</p>
+        </div>
+    </div>
+
+</body>
+</html>

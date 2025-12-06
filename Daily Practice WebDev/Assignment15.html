@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Manager</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #111;
+      color: #f1c40f;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 40px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #f1c40f;
+      padding-bottom: 5px;
+    }
+
+    .container {
+      background-color: #1a1a1a;
+      margin-top: 30px;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    button {
+      background-color: #f1c40f;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    button:hover {
+      background-color: #ffdf60;
+      transform: scale(1.05);
+    }
+
+    form {
+      display: none;
+      flex-direction: column;
+      margin-top: 15px;
+      gap: 10px;
+    }
+
+    label {
+      text-align: left;
+      color: #ffefb0;
+    }
+
+    input {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background-color: #222;
+      color: #fff;
+      font-size: 0.95rem;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      color: #eee;
+    }
+
+    th, td {
+      border: 1px solid #f1c40f;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #222;
+    }
+
+    .no-data {
+      color: #aaa;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #888;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Contact Manager</h1>
+  <div class="container">
+    <button id="addBtn">+ Add Contact</button>
+
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter name" required>
+
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" placeholder="Enter phone number" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter email" required>
+
+      <button type="submit">Save Contact</button>
+    </form>
+
+    <h2 style="margin-top: 20px;">Your Contacts</h2>
+    <table id="contactTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p id="noContacts" class="no-data">No contacts added yet.</p>
+  </div>
+
+  <footer>Assignment 16 by Shashank • </footer>
+
+  <script>
+    const addBtn = document.getElementById("addBtn");
+    const form = document.getElementById("contactForm");
+    const table = document.getElementById("contactTable");
+    const tbody = document.querySelector("#contactTable tbody");
+    const noContacts = document.getElementById("noContacts");
+
+    let contacts = [];
+    addBtn.addEventListener("click", () => {
+      form.style.display = form.style.display === "flex" ? "none" : "flex";
+      addBtn.textContent = form.style.display === "flex" ? "Close Form" : "+ Add Contact";
+    });
+
+    
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (name && phone && email) {
+        contacts.push({ name, phone, email });
+        renderContacts();
+        form.reset();
+        form.style.display = "none";
+        addBtn.textContent = "+ Add Contact";
+      }
+    });
+
+   
+    function renderContacts() {
+      tbody.innerHTML = "";
+      contacts.forEach((c) => {
+        const row = `<tr>
+                      <td>${c.name}</td>
+                      <td>${c.phone}</td>
+                      <td>${c.email}</td>
+                    </tr>`;
+        tbody.innerHTML += row;
+      });
+      table.style.display = contacts.length > 0 ? "table" : "none";
+      noContacts.style.display = contacts.length > 0 ? "none" : "block";
+    }
+  </script>
+
+</body>
+</html>

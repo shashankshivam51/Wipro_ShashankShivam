@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random User Finder</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #111;
+      color: #f1c40f;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    h2 {
+      margin-top: 60px;
+      color: #f1c40f;
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #f1c40f;
+      padding-bottom: 5px;
+    }
+
+    button {
+      margin-top: 25px;
+      background-color: #f1c40f;
+      color: #111;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4);
+    }
+
+    button:hover {
+      background-color: #ffdb4d;
+      transform: translateY(-2px);
+    }
+
+    #userCard {
+      margin-top: 35px;
+      background-color: #1a1a1a;
+      width: 290px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+      text-align: center;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    #userCard:hover {
+      transform: scale(1.03);
+    }
+
+    img {
+      border-radius: 50%;
+      width: 110px;
+      height: 110px;
+      border: 3px solid #f1c40f;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      margin: 10px 0 6px;
+      color: #fff;
+    }
+
+    p {
+      margin: 5px 0;
+      color: #e5e5e5;
+      font-size: 0.95rem;
+    }
+
+    p strong {
+      color: #f1c40f;
+    }
+
+    footer {
+      margin-top: 45px;
+      color: #999;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 400px) {
+      #userCard {
+        width: 90%;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Random User Finder</h2>
+  <button id="fetchUserBtn">Show Random User</button>
+
+  <div id="userCard"></div>
+
+  <footer>Built by Shashank • Black & Yellow Edition ⚡</footer>
+
+  <script>
+    const btn = document.getElementById("fetchUserBtn");
+    const card = document.getElementById("userCard");
+
+    btn.addEventListener("click", () => {
+      btn.textContent = "Loading...";
+      fetch("https://randomuser.me/api/")
+        .then(res => res.json())
+        .then(data => {
+          const user = data.results[0];
+          card.innerHTML = `
+            <img src="${user.picture.large}" alt="User Picture">
+            <h3>${user.name.first} ${user.name.last}</h3>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <p><strong>Country:</strong> ${user.location.country}</p>
+          `;
+          btn.textContent = "Show Another User";
+        })
+        .catch(() => {
+          card.innerHTML = "<p style='color:#ff5555;'>Couldn’t fetch user. Try again.</p>";
+          btn.textContent = "Show Random User";
+        });
+    });
+  </script>
+
+</body>
+</html>

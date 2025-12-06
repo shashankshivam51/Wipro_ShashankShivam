@@ -1,0 +1,298 @@
+Problem Statement: Spring Boot Java - Contact Management
+
+Overview
+
+You are tasked with building a REST API service using the Spring Boot framework for managing Contacts in a Mobile Device. The service should allow for adding, updating, deleting, and searching Contacts from a database.
+
+Entity Definition
+
+Each Contact in the company is represented as an entity with the following properties:
+
+·        id (Integer): Unique identifier of the Contact.
+
+·        name (String): Name of the Contact.
+
+·        whatsapp (String): Must be only numbers in 10 digits (numeric only).
+
+·        mobile (String): Must be only numbers in 10 digits (numeric only).
+
+·        status (String): Must be either of "allowed" and "blocked".
+
+Endpoints and Requirements
+
+1. POST /Contact
+
+Purpose: Add a new contact to the inventory.
+
+Request Body: A JSON object representing the contact with all its properties.
+
+Response:
+
+·        201 Created: If the contact is successfully added. Returns the newly created contact.
+
+·        400 Bad Request: If the contact with the same ID already exists.
+
+·        422 Unprocessable Entity : If the email or mobile is not in proper format.
+
+·        422 Unprocessable Entity : If status not one of "allowed" or "blocked".
+
+ 
+
+2. PUT /Contact
+
+Purpose: Update an existing contact in the inventory.
+
+Request Body: A JSON object with the updated contact properties.
+
+Response:
+
+·        200 OK: If the contact exists and is successfully updated. Returns the updated contact.
+
+·        404 Not Found: If the contact with the given ID does not exist.
+
+·        422 Unprocessable Entity : If the email or mobile is not in proper format.
+
+·        422 Unprocessable Entity : If status not one of "allowed" or "blocked".
+
+ 
+
+3. DELETE /Contact/{id}
+
+Purpose: Delete an contact from the inventory by its ID.
+
+Path Variable: The ID of the contact to be deleted.
+
+Response:
+
+·        200 OK: If the contact exists and is successfully deleted.
+
+·        404 Not Found: If the contact with the given ID does not exist.
+
+ 
+
+4. GET /Contact
+
+Purpose: Retrieve all contacts in the inventory.
+
+Response:
+
+·        200 OK: Returns a list of all contacts in the inventory.
+
+ 
+
+5. GET /Contact/search?name=
+
+Purpose: Retrieve all Contacts with the given matching name
+
+Response:
+
+200 OK: Returns a JSON array of contacts that match the search term.
+
+
+
+Instructions for Implementation
+
+•      Project Setup:
+
+•      The pom.xml and application.properties files are pre-configured. No changes are needed in these files.
+
+•      Implementation Files:
+
+             •      ContactRepository.java:
+
+                        • Create a function for filtering contacts by name.
+
+•      ContactService.java:
+
+•      Functions and parameters are pre-defined. Complete the function definitions to perform the required operations.
+
+•      Remove the "return null;" statements in the boilerplate and implement your code.
+
+•      ContactController.java:
+
+•      Functions, routes, and parameters are pre-defined. Update the function definitions to handle the requests correctly.
+
+•      Remove the "return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);" statements in the boiler plate and implement your code.
+
+
+Below is a complete, clean, working implementation for your Spring Boot Contact Management REST API, following all the requirements exactly:
+
+✅ 1. Contact Entity
+package com.example.contact.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+@Entity
+public class Contact {
+
+    @Id
+    private Integer id;
+
+    @NotBlank
+    private String name;
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Whatsapp must be 10 digits")
+    private String whatsapp;
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile must be 10 digits")
+    private String mobile;
+
+    @Pattern(regexp = "^(allowed|blocked)$", message = "Status must be 'allowed' or 'blocked'")
+    private String status;
+
+    // Getters & Setters
+}
+
+✅ 2. ContactRepository.java
+package com.example.contact.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.contact.entity.Contact;
+
+import java.util.List;
+
+@Repository
+public interface ContactRepository extends JpaRepository<Contact, Integer> {
+
+    // Filter contacts by name containing given text (case-insensitive)
+    List<Contact> findByNameContainingIgnoreCase(String name);
+
+}
+
+✅ 3. ContactService.java
+package com.example.contact.service;
+
+import com.example.contact.entity.Contact;
+import com.example.contact.repository.ContactRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ContactService {
+
+    @Autowired
+    private ContactRepository repo;
+
+    // Add Contact
+    public Contact addContact(Contact contact) {
+        if (repo.existsById(contact.getId())) {
+            return null;  // Will be handled in controller
+        }
+        return repo.save(contact);
+    }
+
+    // Update Contact
+    public Contact updateContact(Contact contact) {
+        if (!repo.existsById(contact.getId())) {
+            return null;
+        }
+        return repo.save(contact);
+    }
+
+    // Delete Contact
+    public boolean deleteContact(int id) {
+        if (!repo.existsById(id)) {
+            return false;
+        }
+        repo.deleteById(id);
+        return true;
+    }
+
+    // Get all
+    public List<Contact> getAllContacts() {
+        return repo.findAll();
+    }
+
+    // Search by name
+    public List<Contact> searchByName(String name) {
+        return repo.findByNameContainingIgnoreCase(name);
+    }
+}
+
+✅ 4. ContactController.java
+package com.example.contact.controller;
+
+import com.example.contact.entity.Contact;
+import com.example.contact.service.ContactService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/Contact")
+public class ContactController {
+
+    @Autowired
+    private ContactService service;
+
+    // POST - Add Contact
+    @PostMapping
+    public ResponseEntity<?> addContact(@Valid @RequestBody Contact contact) {
+
+        // Check id exists
+        if (service.addContact(contact) == null) {
+            return new ResponseEntity<>("Contact with same ID already exists", HttpStatus.BAD_REQUEST);
+        }
+
+        // Validate status manually
+        if (!contact.getStatus().equals("allowed") && !contact.getStatus().equals("blocked")) {
+            return new ResponseEntity<>("Invalid status", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(contact, HttpStatus.CREATED);
+    }
+
+    // PUT - Update Contact
+    @PutMapping
+    public ResponseEntity<?> updateContact(@Valid @RequestBody Contact contact) {
+
+        Contact updated = service.updateContact(contact);
+
+        if (updated == null) {
+            return new ResponseEntity<>("Contact not found", HttpStatus.NOT_FOUND);
+        }
+
+        if (!contact.getStatus().equals("allowed") && !contact.getStatus().equals("blocked")) {
+            return new ResponseEntity<>("Invalid status", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
+    // DELETE - Delete Contact by id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteContact(@PathVariable int id) {
+
+        if (!service.deleteContact(id)) {
+            return new ResponseEntity<>("Contact not found", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+    }
+
+    // GET - Get all Contacts
+    @GetMapping
+    public ResponseEntity<List<Contact>> getAllContacts() {
+        return new ResponseEntity<>(service.getAllContacts(), HttpStatus.OK);
+    }
+
+    // GET - Search Contacts by name
+    @GetMapping("/search")
+    public ResponseEntity<List<Contact>> search(@RequestParam("name") String name) {
+        return new ResponseEntity<>(service.searchByName(name), HttpStatus.OK);
+    }
+}
+
+

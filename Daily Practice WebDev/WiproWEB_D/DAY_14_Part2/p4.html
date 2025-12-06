@@ -1,0 +1,45 @@
+
+<html>
+    <head>
+        <script>
+            var questions = new Array(
+                "1. What is Web Development?",
+                "2. What is DNS?",
+                "3. Explain about Front-end Programming?",
+                "4. What is V8 Engine?",
+                "5. Explain about Arrays in JavaScript>"
+            );
+            var qusetionNo = 0;
+            var totalQuestions = questions.length;
+
+            function load(){
+                document.getElementById("question").innerHTML = questions[qusetionNo];
+            }
+
+            function prevQuestion() {
+                qusetionNo--;
+                if (qusetionNo < 0) {
+                    qusetionNo = 0;
+                    alert("No Questions Before That...");
+                }
+                load();
+            }
+            function nextQuestion() {
+                qusetionNo++;
+                if (qusetionNo == totalQuestions) {
+                    qusetionNo = totalQuestions -1;
+                    alert("No Questions after this");
+                }
+                load();
+            }
+        </script>
+    </head>
+<body onload="load()">
+    <center>
+     <p id="question"></p> <br/>
+     <input type="button" value="Next" onclick="nextQuestion()" />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <input type="button" value="Previous" onclick="prevQuestion()" />
+    </center>
+</body>
+</html>
