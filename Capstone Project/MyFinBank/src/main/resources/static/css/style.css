@@ -1,0 +1,265 @@
+@charset "UTF-8";
+:root {
+    --primary-purple: #6a0dad;
+    --primary-purple-light: #8a2be2;
+    --bg-light: #f5f5fb;
+    --card-bg: #ffffff;
+    --text-dark: #222222;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.navbar-myfinbank {
+    background: linear-gradient(90deg, var(--primary-purple), var(--primary-purple-light));
+}
+
+.navbar-myfinbank .navbar-brand,
+.navbar-myfinbank .nav-link,
+.navbar-myfinbank .btn-outline-light {
+    color: #ffffff !important;
+}
+
+.navbar-myfinbank .btn-outline-light {
+    border-color: #ffffff;
+}
+
+.navbar-myfinbank .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: var(--primary-purple) !important;
+}
+
+.card-myfinbank {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.card-myfinbank-header {
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 1rem 1.25rem;
+    background: linear-gradient(90deg, rgba(106,13,173,0.05), rgba(138,43,226,0.05));
+    border-radius: 12px 12px 0 0;
+}
+
+.card-myfinbank-body {
+    padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+}
+
+h3.page-title {
+    color: var(--primary-purple);
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--primary-purple);
+    border-color: var(--primary-purple);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-purple-light);
+    border-color: var(--primary-purple-light);
+}
+
+.table thead {
+    background: linear-gradient(90deg, var(--primary-purple), var(--primary-purple-light));
+    color: #ffffff;
+}
+
+.badge-status-inactive {
+    background-color: #ffc107;
+}
+
+.badge-status-active {
+    background-color: #28a745;
+}
+
+.badge-status-red {
+    background-color: #b30000;  /* deep red */
+    color: #ffffff;
+}
+
+.logo-bg {
+    background-image: url('../css/FinBanklogo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 200px;
+}
+
+
+
+/* ---------- NAVBAR ENHANCEMENTS ---------- */
+.navbar-myfinbank {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.navbar-myfinbank .nav-link {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    position: relative;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    opacity: 0.9;
+}
+
+.navbar-myfinbank .nav-link:hover {
+    opacity: 1;
+}
+
+.navbar-myfinbank .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: -4px;
+    height: 2px;
+    border-radius: 999px;
+    background-color: #ffffff;
+    opacity: 0;
+    transform: scaleX(0.2);
+    transition: all 0.2s ease-out;
+}
+
+.navbar-myfinbank .nav-link:hover::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* ---------- LOGO AREA ---------- */
+.logo-bg {
+    background-image: url('../css/FinBanklogo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    height: 50px;
+    width: 200px;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+}
+
+/* If you use an <img> logo directly */
+
+
+/* ---------- GLOBAL SECTIONS & HEADINGS ---------- */
+section {
+    scroll-margin-top: 80px; /* smooth anchor navigation */
+}
+
+section h4 {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.95rem;
+    color: var(--primary-purple);
+}
+
+section h4.fw-bold {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+section h4.fw-bold::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primary-purple), var(--primary-purple-light));
+}
+
+/* ---------- CARD / PANEL ENHANCEMENTS ---------- */
+.card-myfinbank {
+    transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.card-myfinbank:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+.card-myfinbank-header span {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dark);
+}
+
+/* ---------- TIMELINE (HISTORY SECTION) ---------- */
+.timeline-item {
+    position: relative;
+    padding: 1.5rem 1.75rem 1.5rem 2.75rem;
+    margin-left: 1rem;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 1.2rem;
+    top: 1.6rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--primary-purple), var(--primary-purple-light));
+    box-shadow: 0 0 0 4px rgba(106,13,173,0.2);
+}
+
+.timeline-item::after {
+    content: "";
+    position: absolute;
+    left: 1.65rem;
+    top: 2.1rem;
+    bottom: -1.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(106,13,173,0.25), rgba(138,43,226,0));
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
+
+/* ---------- PROMO ALERTS ---------- */
+.alert {
+    border-radius: 12px;
+    border-width: 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.18);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width: 767.98px) {
+    .navbar-myfinbank .nav-link {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .timeline-item {
+        margin-left: 0;
+        padding-left: 2.5rem;
+    }
+
+    .timeline-item::before {
+        left: 0.9rem;
+    }
+
+    .timeline-item::after {
+        left: 1.35rem;
+    }
+}
+
+
